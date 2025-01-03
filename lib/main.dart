@@ -79,7 +79,7 @@ class MyApp extends StatelessWidget {
       ),
       home: BaseScreen(
         selectedIndex: 0,
-        body: CameraScreen(),
+        body: CameraScreen(), 
       ),
     );
   }

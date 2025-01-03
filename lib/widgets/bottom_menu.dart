@@ -6,63 +6,49 @@ import '../screens/settings_screen.dart';
 import '../app_state.dart';
 
 class BaseScreen extends StatefulWidget {
-  final Widget body;
   final int selectedIndex;
+  final Widget body;
 
-  const BaseScreen({
-    Key? key,
-    required this.body,
-    required this.selectedIndex,
-  }) : super(key: key);
+  BaseScreen({required this.selectedIndex, required this.body});
 
   @override
   _BaseScreenState createState() => _BaseScreenState();
 }
 
 class _BaseScreenState extends State<BaseScreen> {
+  late PageController _pageController;
+  int _selectedIndex = 0;
+  late Widget _currentBody;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedIndex = widget.selectedIndex;
+    _currentBody = widget.body;
+    _pageController = PageController(initialPage: _selectedIndex);
+  }
+
   void _onItemTapped(int index) {
-    final appState = Provider.of<AppState>(context, listen: false);
-    switch (index) {
-      case 0:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => BaseScreen(
-              selectedIndex: 0,
-              body: CameraScreen(),
-            ),
-          ),
-        );
-        break;
-      case 1:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => BaseScreen(
-              selectedIndex: 1,
-              body: StoredImagesScreen(),
-            ),
-          ),
-        );
-        break;
-      case 2:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => BaseScreen(
-              selectedIndex: 2,
-              body: SettingsScreen(),
-            ),
-          ),
-        );
-        break;
-    }
+    setState(() {
+      _selectedIndex = index;
+      switch (index) {
+        case 0:
+          _currentBody = CameraScreen();
+          break;
+        case 1:
+          _currentBody = StoredImagesScreen();
+          break;
+        case 2:
+          _currentBody = SettingsScreen();
+          break;
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: widget.body,
+      body: _currentBody,
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -78,7 +64,7 @@ class _BaseScreenState extends State<BaseScreen> {
             label: 'Settings',
           ),
         ],
-        currentIndex: widget.selectedIndex,
+        currentIndex: _selectedIndex,
         selectedItemColor: Theme.of(context).bottomNavigationBarTheme.selectedItemColor,
         unselectedItemColor: Theme.of(context).bottomNavigationBarTheme.unselectedItemColor,
         onTap: _onItemTapped,

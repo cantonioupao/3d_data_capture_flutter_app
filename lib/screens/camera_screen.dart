@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
-import 'package:tflite_flutter/tflite_flutter.dart';
 import 'object_detection_screen.dart';
-import '../widgets/bottom_menu.dart'; // Add this line to import BaseScreen
+import '../widgets/bottom_menu.dart';
 import 'dart:io';
 import 'package:image/image.dart' as img_lib;
 import 'package:provider/provider.dart';
@@ -48,11 +47,8 @@ class _CameraScreenState extends State<CameraScreen> with SingleTickerProviderSt
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => BaseScreen(
-            selectedIndex: 0,
-            body: ObjectDetectionScreen(
-              imagePath: image.path,
-            ),
+          builder: (context) => ObjectDetectionScreen(
+            imagePath: image.path,
           ),
         ),
       );

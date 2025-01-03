@@ -83,7 +83,7 @@ class _ObjectDetectionScreenState extends State<ObjectDetectionScreen> {
     appState.interpreter!.runForMultipleInputs([reshapedInput], outputs);
 
     final results = <Map<String, dynamic>>[];
-    double confidenceThreshold = 0.6;
+    double confidenceThreshold = 0.4;
 
     for (var i = 0; i < outputScores[0].length; i++) {
       if (outputScores[0][i] >= confidenceThreshold) {
@@ -150,54 +150,85 @@ class _ObjectDetectionScreenState extends State<ObjectDetectionScreen> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            width: 300,
-            height: 300,
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                Image.file(
-                  File(widget.imagePath),
-                  fit: BoxFit.cover,
-                ),
-                if (_detections != null)
-                  CustomPaint(
-                    painter: DetectionBoxPainter(
-                      recognitions: _detections,
-                      imageHeight: _originalImage.height,
-                      imageWidth: _originalImage.width,
-                    ),
+@override
+Widget build(BuildContext context) {
+  return BaseScreen(
+    selectedIndex: 0,
+    body: Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 300,
+              height: 300,
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  Image.file(
+                    File(widget.imagePath),
+                    fit: BoxFit.cover,
                   ),
+                    CustomPaint(
+                      painter: DetectionBoxPainter(
+                        recognitions: _detections,
+                        imageHeight: _originalImage.height,
+                        imageWidth: _originalImage.width,
+                      ),
+                    ),
+                ],
+              ),
+            ),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    padding: EdgeInsets.all(16),
+                  ),
+                  icon: Icon(
+                    Icons.refresh,
+                    color: Colors.white,
+                  ),
+                  label: Text(
+                    'Retry',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+                SizedBox(width: 10),
+                ElevatedButton.icon(
+                  onPressed: _storeImage,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    padding: EdgeInsets.all(16),
+                  ),
+                  icon: Icon(
+                    Icons.save,
+                    color: Colors.white,
+                  ),
+                  label: Text(
+                    'Save',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
               ],
             ),
-          ),
-          SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              IconButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                icon: Icon(Icons.refresh),
-                tooltip: 'Retry',
-              ),
-              SizedBox(width: 10),
-              IconButton(
-                onPressed: _storeImage,
-                icon: Icon(Icons.save),
-                tooltip: 'Store Image',
-              ),
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
-    );
-  }
+    ),
+  );
+}
+
 }
