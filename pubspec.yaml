@@ -1,0 +1,27 @@
+name: flutter_application_data_capture
+description: "A Flutter project for the mobile app development of object detection and 3D capture"
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: ^3.6.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  camera: ^0.10.5+5
+  tflite_flutter: ^0.11.0
+  image: ^4.1.3
+  path_provider: ^2.1.1
+  provider: ^6.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  assets:
+    - assets/detect.tflite
+    - assets/labelmap.txt
+  uses-material-design: true
