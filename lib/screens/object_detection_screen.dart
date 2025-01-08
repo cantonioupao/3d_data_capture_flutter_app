@@ -83,7 +83,7 @@ class _ObjectDetectionScreenState extends State<ObjectDetectionScreen> {
     appState.interpreter!.runForMultipleInputs([reshapedInput], outputs);
 
     final results = <Map<String, dynamic>>[];
-    double confidenceThreshold = 0.4;
+    double confidenceThreshold = 0.6;
 
     for (var i = 0; i < outputScores[0].length; i++) {
       if (outputScores[0][i] >= confidenceThreshold) {
